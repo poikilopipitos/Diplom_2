@@ -7,7 +7,7 @@ from helpers.helpers import generate_user_data
 @allure.feature("Логин пользователя")
 class TestLoginUser:
 
-    @allure.title("Успешная авторизация пользователя")
+    @allure.title("Успешная авторизация под существующим пользователем")
     def test_login_user_success(self,user_setup):
         payload = user_setup["payload"]
         response = BurgerMethods.login_user(payload)
@@ -15,7 +15,7 @@ class TestLoginUser:
         assert response.json()["success"] is True
         assert response.json()["accessToken"]
 
-    @allure.title("Ошибка авторизации с неправильным логином")
+    @allure.title("Ошибка авторизации при отправке неверного email")
     def test_login_user_with_invalid_login(self,user_setup):
         payload = user_setup["payload"]
         invalid_payload = {"email": payload['email'] + '123',"password": payload['password']}

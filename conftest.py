@@ -24,9 +24,10 @@ def user_setup():
 def user_cleaner_api():
     tokens = []
     yield tokens
-    for token in tokens:
-        if token:
-            with allure.step("Фикстура TEARDOWN: Удаление созданного в тесте пользователя"):
-                BurgerMethods.delete_user(token)
+    with allure.step("Фикстура TEARDOWN: Удаление созданных в тестах пользователей"):
+        for token in tokens:
+            if token:
+                with allure.step("Фикстура TEARDOWN: Удаление созданного в тесте пользователя"):
+                    BurgerMethods.delete_user(token)
 
 
