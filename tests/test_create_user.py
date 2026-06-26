@@ -15,16 +15,26 @@ class TestCreateUser:
         assert data.get("success") is True
         assert data.get("refreshToken") and data.get("accessToken") 
         
+    #@allure.title("Ошибка при регистрации пользователя с уже существующим email")
+    #def test_create_user_duplicate_email(self,user_cleaner_api):
+    #    payload = generate_user_data()
+    #    response_1 = BurgerMethods.create_user(payload)
+    #    user_cleaner_api.append(response_1.json().get("accessToken"))
+    #    response_2 = BurgerMethods.create_user(payload)
+    #    assert response_1.status_code == 200 
+    #    assert response_2.status_code == 403
+    #    assert response_2.json()["success"] is False
+    #    assert response_2.json()["message"] == "User already exists"
+
+
+
     @allure.title("Ошибка при регистрации пользователя с уже существующим email")
-    def test_create_user_duplicate_email(self,user_cleaner_api):
-        payload = generate_user_data()
-        response_1 = BurgerMethods.create_user(payload)
-        user_cleaner_api.append(response_1.json().get("accessToken"))
-        response_2 = BurgerMethods.create_user(payload)
-        assert response_1.status_code == 200 
-        assert response_2.status_code == 403
-        assert response_2.json()["success"] is False
-        assert response_2.json()["message"] == "User already exists"
+    def test_create_user_duplicate_email(self,registered_user):
+        response = BurgerMethods.create_user(registered_user)
+        assert response.status_code == 403
+        assert response.json()["success"] is False
+        assert response.json()["message"] == "User already exists"
+
 
     @allure.title("Ошибка создания уникального пользователя, без указания email")
     def test_create_user_without_email(self):

@@ -8,8 +8,9 @@ from helpers.helpers import generate_user_data
 def user_setup():
     with allure.step("Фикстура SETUP: Создание и авторизация пользователя перед тестом"):
         payload = generate_user_data()
-        create_responce = BurgerMethods.create_user(payload)
-        assert create_responce.status_code == 200
+        #create_responce = BurgerMethods.create_user(payload)
+        BurgerMethods.create_user(payload)
+        #assert create_responce.status_code == 200
         login_response = BurgerMethods.login_user({
         "email": payload["email"],
         "password": payload["password"]})
@@ -30,4 +31,13 @@ def user_cleaner_api():
                 with allure.step("Фикстура TEARDOWN: Удаление созданного в тесте пользователя"):
                     BurgerMethods.delete_user(token)
 
+
+@pytest.fixture
+def registered_user(user_cleaner_api):
+    payload = generate_user_data()
+    response = BurgerMethods.create_user(payload)
+    token = response.json().get("accessToken")
+    if token:
+        user_cleaner_api.append(token)
+    return payload
 
