@@ -8,9 +8,7 @@ from helpers.helpers import generate_user_data
 def user_setup():
     with allure.step("Фикстура SETUP: Создание и авторизация пользователя перед тестом"):
         payload = generate_user_data()
-        #create_responce = BurgerMethods.create_user(payload)
         BurgerMethods.create_user(payload)
-        #assert create_responce.status_code == 200
         login_response = BurgerMethods.login_user({
         "email": payload["email"],
         "password": payload["password"]})
